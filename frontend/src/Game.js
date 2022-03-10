@@ -73,9 +73,8 @@ class Game extends React.Component {
     componentWillUnmount() {
         clearInterval(this.interval);
       }
-
+    
     async handleClick(i) {
-
         const history = this.state.history.slice(0, this.state.stepNumber + 1);
         const current = history[history.length - 1];
         const squares = current.squares.slice();
@@ -101,7 +100,7 @@ class Game extends React.Component {
         else{
           clearInterval(this.interval);
           //Send request to update state
-          await oxService.create(state_obj).then((res)=>{
+          oxService.create(state_obj).then((res)=>{
               this.setState({
                 history: ([{
                   squares: squares,
@@ -151,7 +150,7 @@ class Game extends React.Component {
                 (<div className="game"><div className="game-board">
                   <Board
                     squares={current.squares}
-                    onClick={(i)=>this.handleClick(i)}
+                    onClick={async (i)=>await this.handleClick(i)}
                   />
                 </div>
                 <div className="game-info">
