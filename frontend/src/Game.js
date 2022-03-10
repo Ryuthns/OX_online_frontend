@@ -103,7 +103,7 @@ class Game extends React.Component {
           else{
             clearInterval(this.interval);
             //Send request to update state
-            if(!this.state.click){
+            if(this.state.click){
             oxService.create(state_obj).then((res)=>{
                 this.setState({
                   history: ([{
