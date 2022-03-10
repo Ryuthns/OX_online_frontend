@@ -93,9 +93,11 @@ class Game extends React.Component {
         console.log((this.state.xIsNext))
 
         if(!this.state.xIsNext && (this.state.startwith == "X")){
+          this.setState({xIsNext: false});
           return;
         }
         else if(this.state.xIsNext && (this.state.startwith == "O")){
+          this.setState({xIsNext: true});
           return;
         }
         else{
