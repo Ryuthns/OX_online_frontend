@@ -75,7 +75,8 @@ class Game extends React.Component {
       }
 
     handleClick(i) {
-        
+          clearInterval(this.interval);
+          // this.setState({click:false})
           const history = this.state.history.slice(0, this.state.stepNumber + 1);
           const current = history[history.length - 1];
           const squares = current.squares.slice();
@@ -93,15 +94,12 @@ class Game extends React.Component {
           console.log((this.state.xIsNext))
 
           if(!this.state.xIsNext && (this.state.startwith == "X")){
-            this.setState({click:false})
             return;
           }
           else if(this.state.xIsNext && (this.state.startwith == "O")){
-            this.setState({click:false})
             return;
           }
           else{
-            clearInterval(this.interval);
             //Send request to update state
             if(this.state.click){
             oxService.create(state_obj).then((res)=>{
@@ -111,7 +109,7 @@ class Game extends React.Component {
                   }]),
                   stepNumber: history.length,
                   xIsNext: !this.state.xIsNext,
-                  click:true,
+                  click:false,
                 });
                 this.interval = setInterval(
                   () => {this.getalldata()},1000)
