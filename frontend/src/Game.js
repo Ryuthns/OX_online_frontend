@@ -38,7 +38,7 @@ class Game extends React.Component {
     }
 
     getalldata=()=>{
-        oxService.getAll().then((res)=>{
+      oxService.getAll().then((res)=>{
         let new_history;
         let cur;
        
@@ -59,7 +59,7 @@ class Game extends React.Component {
             }],
             stepNumber: 0,
             xIsNext: true,
-
+            click:true
           });
         }
         })
@@ -68,50 +68,57 @@ class Game extends React.Component {
     componentDidMount(){
       this.getalldata()
       this.interval = setInterval(
-      () => {this.getalldata()},1000)
+        () => {this.getalldata()},1000)
       }
     componentWillUnmount() {
         clearInterval(this.interval);
       }
-    
-    async handleClick(i) {
-        const history = this.state.history.slice(0, this.state.stepNumber + 1);
-        const current = history[history.length - 1];
-        const squares = current.squares.slice();
-        if (calculateWinner(squares) || squares[i]) {
-          return;
-        }
-        
-        squares[i] = this.state.xIsNext ? 'X' : 'O';
-        
-  
-        const state_obj={
-            current_board: squares.toString(),
-            turn: this.state.xIsNext?'X':'O'
-        };
-        console.log((this.state.xIsNext))
 
-        if(!this.state.xIsNext && (this.state.startwith == "X")){
-          return;
-        }
-        else if(this.state.xIsNext && (this.state.startwith == "O")){
-          return;
-        }
-        else{
-          clearInterval(this.interval);
-          //Send request to update state
-          await oxService.create(state_obj).then((res)=>{
-              this.setState({
-                history: ([{
-                  squares: squares,
-                }]),
-                stepNumber: history.length,
-                xIsNext: !this.state.xIsNext,
+    handleClick(i) {
+        
+          const history = this.state.history.slice(0, this.state.stepNumber + 1);
+          const current = history[history.length - 1];
+          const squares = current.squares.slice();
+          if (calculateWinner(squares) || squares[i]) {
+            return;
+          }
+          
+          squares[i] = this.state.xIsNext ? 'X' : 'O';
+          
+    
+          const state_obj={
+              current_board: squares.toString(),
+              turn: this.state.xIsNext?'X':'O'
+          };
+          console.log((this.state.xIsNext))
+
+          if(!this.state.xIsNext && (this.state.startwith == "X")){
+            this.setState({click:true})
+            return;
+          }
+          else if(this.state.xIsNext && (this.state.startwith == "O")){
+            this.setState({click:true})
+            return;
+          }
+          else{
+            clearInterval(this.interval);
+            //Send request to update state
+            if(this.state.click){
+            oxService.create(state_obj).then((res)=>{
+                this.setState({
+                  history: ([{
+                    squares: squares,
+                  }]),
+                  stepNumber: history.length,
+                  xIsNext: !this.state.xIsNext,
+                  click:false,
+                });
+                this.interval = setInterval(
+                  () => {this.getalldata()},1000)
               });
-              this.interval = setInterval(
-                () => {this.getalldata()},1000)
-            });
+          }
         }
+        
         
     }
 
@@ -150,7 +157,7 @@ class Game extends React.Component {
                 (<div className="game"><div className="game-board">
                   <Board
                     squares={current.squares}
-                    onClick={async (i)=>await this.handleClick(i)}
+                    onClick={(i)=> { this.handleClick(i);}}
                   />
                 </div>
                 <div className="game-info">
