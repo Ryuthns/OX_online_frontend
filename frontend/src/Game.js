@@ -67,14 +67,14 @@ class Game extends React.Component {
 
     componentDidMount(){
       this.getalldata()
-       this.interval = setInterval(
+      this.interval = setInterval(
         () => {this.getalldata()},1000)
       }
     componentWillUnmount() {
         clearInterval(this.interval);
       }
 
-    async handleClick(i) {
+    handleClick(i) {
 
         const history = this.state.history.slice(0, this.state.stepNumber + 1);
         const current = history[history.length - 1];
@@ -93,16 +93,15 @@ class Game extends React.Component {
         console.log((this.state.xIsNext))
 
         if(!this.state.xIsNext && (this.state.startwith == "X")){
-          this.setState({xIsNext: false});
           return;
         }
         else if(this.state.xIsNext && (this.state.startwith == "O")){
-          this.setState({xIsNext: true});
           return;
         }
         else{
+          clearInterval(this.interval);
           //Send request to update state
-          await oxService.create(state_obj).then((res)=>{
+          oxService.create(state_obj).then((res)=>{
               this.setState({
                 history: ([{
                   squares: squares,
@@ -110,6 +109,8 @@ class Game extends React.Component {
                 stepNumber: history.length,
                 xIsNext: !this.state.xIsNext,
               });
+              this.interval = setInterval(
+                () => {this.getalldata()},1000)
             });
         }
         
