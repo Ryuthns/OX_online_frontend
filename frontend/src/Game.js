@@ -33,6 +33,7 @@ class Game extends React.Component {
           stepNumber: 0,
           xIsNext: true,
           startwith: null,
+          click:true
         };
         
     }
@@ -59,7 +60,6 @@ class Game extends React.Component {
             }],
             stepNumber: 0,
             xIsNext: true,
-            click:true
           });
         }
         })
