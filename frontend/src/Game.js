@@ -33,7 +33,6 @@ class Game extends React.Component {
           stepNumber: 0,
           xIsNext: true,
           startwith: null,
-          click:true
         };
         
     }
@@ -76,7 +75,6 @@ class Game extends React.Component {
 
     handleClick(i) {
           clearInterval(this.interval);
-          // this.setState({click:false})
           const history = this.state.history.slice(0, this.state.stepNumber + 1);
           const current = history[history.length - 1];
           const squares = current.squares.slice();
@@ -101,20 +99,18 @@ class Game extends React.Component {
           }
           else{
             //Send request to update state
-            if(this.state.click){
             oxService.create(state_obj).then((res)=>{
                 this.setState({
                   history: ([{
                     squares: squares,
                   }]),
                   stepNumber: history.length,
-                  xIsNext: !this.state.xIsNext,
-                  click:false,
+                  xIsNext: !this.state.xIsNext
                 });
                 this.interval = setInterval(
                   () => {this.getalldata()},1000)
               });
-          }
+          
         }
         
         
