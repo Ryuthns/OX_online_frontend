@@ -37,8 +37,8 @@ class Game extends React.Component {
         
     }
 
-    async getalldata=()=>{
-      await oxService.getAll().then((res)=>{
+    getalldata=()=>{
+        oxService.getAll().then((res)=>{
         let new_history;
         let cur;
        
