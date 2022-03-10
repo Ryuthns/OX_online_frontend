@@ -74,7 +74,7 @@ class Game extends React.Component {
         clearInterval(this.interval);
       }
 
-    handleClick(i) {
+    async handleClick(i) {
 
         const history = this.state.history.slice(0, this.state.stepNumber + 1);
         const current = history[history.length - 1];
@@ -100,7 +100,7 @@ class Game extends React.Component {
         }
         else{
           //Send request to update state
-          oxService.create(state_obj).then((res)=>{
+          await oxService.create(state_obj).then((res)=>{
               this.setState({
                 history: ([{
                   squares: squares,
